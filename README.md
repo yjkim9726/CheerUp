@@ -10,7 +10,7 @@
 ------------
 - 링크<br>
   + [notion](https://www.notion.so/CodePresso-3a8f5bd6852a4c5f81f68435e515cdf1)<br>
-
+  + [ppt](file:///C:/Users/gram15/Desktop/%EC%BD%94%EB%93%9C%ED%94%84%EB%A0%88%EC%86%8C/%EC%9B%B9%EA%B0%9C%EB%B0%9CB%EB%B0%982%EC%A1%B0_Cheer%20Up.pdf)<br>
 ------------
 ## Contetns
 
