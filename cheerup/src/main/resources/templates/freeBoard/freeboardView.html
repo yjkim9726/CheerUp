@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>FlexStart Bootstrap Template - Index</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!--head config layout link-->
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
+    <link href="/css/freeBoard/writeFreeBoard.css" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/freeBoard/comment.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+
+<body>
+<!--header config layout link-->
+<th:block th:replace="fragments/header :: headerFragment"></th:block>
+
+<main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section class="breadcrumbs">
+        <div class="container">
+
+            <ol>
+                <li><a href="index.html">Home</a></li>
+                <li>자유게시판</li>
+            </ol>
+            <h2>자유게시판</h2>
+
+        </div>
+    </section>
+
+    <section class="inner-page">
+        <div class="container aos-init aos-animate" data-aos="fade-up">
+            <h4>글 보기</h4>
+            <hr class="one">
+            <br>
+            <div class="mb-3 row">
+                <label for="title" class="col-sm-2 col-form-label">제목</label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control-plaintext" name="title" id="title" th:value="${freeboardDetail.title}">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="writeId" class="col-sm-2 col-form-label">작성자</label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control-plaintext" id="writeId" th:value="${freeboardDetail.writeId}">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="category" class="col-sm-2 col-form-label">카테고리</label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control-plaintext" id="category" th:value="${freeboardDetail.category}">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="content" class="form-label">내용</label>
+                <textarea class="form-control" readonly id="content" rows="3" th:text="${freeboardDetail.content}"></textarea>
+            </div>
+
+            <div th:if="${freeboardDetail.writeId == user}" style="display: contents;">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#md-updateFreeBoard">수정</button>
+                <button type="button" class="btn btn-danger" th:onclick="|location.href='@{/freeboard/delete(boardNo=${freeboardDetail.boardNo})}'|">삭제</button>
+            </div>
+
+            <!--댓글-->
+            <br><br>
+            <form th:action="@{/freeboard/view/insertReply}" method="post">
+<!--                <input type="hidden" th:value="${freeboardDetail.title}" name="re-title">-->
+                <input type="hidden" th:value="${freeboardDetail.boardNo}" name="re-boardNo">
+                <input type="hidden" th:value="${freeboardDetail.writeId}" name="re-writeId">
+                <div id="form-commentInfo" class="col-md-6">
+                    <input type="text" class="form-control" name="re-content" id="re-content" style="float: left; width: 90%" placeholder="댓글을 입력해 주세요.">
+                    <button id="submit" style="float: right;">등록</button>
+                </div> <br>
+            </form>
+            <div th:each="replyList : ${replyList}">
+                <div class="mb-3">
+                    <br><br>
+                    <input type="text" readonly class="form-control-plaintext" name="_writeId" th:value="${replyList.writeId}">
+                    <input type="text" readonly class="form-control-plaintext" name="_reply" th:value="${replyList.reply}">
+                </div>
+                <div th:if="${replyList.writeId == user}" style="display: contents;">
+                    <button type="button" class="btn btn-danger" th:onclick="|location.href='@{/freeboard/view/deleteReply(boardNo=${replyList.boardNo},replyNo=${replyList.replyNo})}'|">삭제</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<!-- End #main -->
+
+<!--수정 및 삭제-->
+<div class="modal fade" id="md-updateFreeBoard" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">글 수정하기</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateFreeBoard" th:action="@{/freeboard/update}" method = "post">
+                    <input type="hidden" name="md-boardNo" th:value="${freeboardDetail.boardNo}">
+                    <div class="mb-3 row">
+                        <label for="md-title" class="col-sm-2 col-form-label">제목</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="md-title" id="md-title" th:value="${freeboardDetail.title}">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="md-writeId" class="col-sm-2 col-form-label">작성자</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control-plaintext" name="md-writeId" id="md-writeId" th:value="${freeboardDetail.writeId}">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="md-content" class="form-label">내용</label>
+                        <textarea class="form-control" name="md-content" id="md-content"  rows="3" th:text="${freeboardDetail.content}"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="submit" class="btn btn-success" form="updateFreeBoard">수정</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src="/vendor/purecounter/purecounter_vanilla.js"></script>
+<script src="/vendor/aos/aos.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+
+<script src="/js/freeBoard/comment.js"></script>
+
+</body>
+
+</html>

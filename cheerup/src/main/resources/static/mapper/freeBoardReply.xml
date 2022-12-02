@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codepresso.cheerup.dao.FreeBoardReplyMapper">
+
+    <!--  전체 댓글 조회  -->
+    <select id="getAllReplyList" resultType="com.codepresso.cheerup.vo.FreeBoardReply">
+        select * from freeBoardOfReply order by replyNo desc
+    </select>
+
+    <!--  댓글 작성  -->
+    <insert id="insertReply" parameterType="FreeBoardReply">
+        insert into freeBoardOfReply (boardNo, reply, writeId, replydate)
+        values (#{boardNo}, #{reply}, #{writeId}, now())
+    </insert>
+
+    <!--  댓글 삭제  -->
+    <delete id="deleteReply" parameterType="Integer">
+        delete from freeBoardOfReply where replyNo= #{replyNo}
+    </delete>
+
+</mapper>

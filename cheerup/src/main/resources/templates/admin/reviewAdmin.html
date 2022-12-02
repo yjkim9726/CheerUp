@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>채용후기 관리자모드</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!--head config layout link-->
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
+    <link href="/css/recruitReview/mainRecruitReview.css" rel="stylesheet">
+</head>
+
+
+<body>
+<!--header config layout link-->
+<!--<th:block th:replace="fragments/header :: headerFragment"></th:block>-->
+
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+        <a href="/home" class="logo d-flex align-items-center">
+            <img src="/img/logo.png" alt="">
+            <span>CheerUp</span>
+        </a>
+
+
+    </div>
+</header>
+<!-- End Header -->
+
+<main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section class="breadcrumbs">
+        <div class="container">
+
+            <ol>
+                <li><a href="/home">&#127969; Home</a></li>
+                <li>채용후기 Admin</li>
+            </ol>
+            <h2>채용후기 Admin</h2>
+
+        </div>
+    </section>
+
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
+
+    <div class="container">
+        <div class="row">
+
+            <!---->
+
+            <div class="col-md-10 col-md-offset-1">
+
+                <div class="panel panel-default panel-table">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col col-xs-6">
+                                <h2 class="panel-title">채용후기 Admin</h2>
+
+                            </div>
+                         <div class="col col-xs-6 text-right">
+                                <button type="button" class="btn btn-sm btn-primary btn-create">공지글 작성</button>
+
+                     </div>
+                 </div>
+              </div>
+          </div>
+        </div>
+
+    <section class="inner-page">
+        <div class="container aos-init aos-animate" data-aos="fade-up">
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col-4">
+                    <select style="height: 44px;width: 250px;margin: 0;" name="category" class="form-select" aria-label="Default select example">
+                        <option th:selected="${searchCategory == null}">카테고리</option>
+                        <option th:selected="${searchCategory}">일상</option>
+                        <option th:selected="${searchCategory}">자료</option>
+                        <option th:selected="${searchCategory}">기타</option>
+                    </select>
+                    <!--                    <select style="height: 44px;" class="form-select" aria-label="Default select example">-->
+                    <!--                        <option selected>카테고리</option>-->
+                    <!--                        <option value="">일상</option>-->
+                    <!--                        <option value="">자료</option>-->
+                    <!--                    </select>-->
+                </div>
+            </div>
+<!--            <div class="row">-->
+<!--                <table class="table">-->
+<!--                    <thead>-->
+<!--&lt;!&ndash;                    <tr> -->
+                        <div class="panel-body">
+                        <table class="table table-striped table-bordered table-list">
+                            <thead class="table-dark col-md-auto">
+                            <tr>
+                                <th><em class="fa fa-cog"></em></th>
+
+
+                        <th scope="col">글 번호</th>
+                        <th scope="col">제목</th>
+                        <th scope="col">회사명</th>
+                        <th scope="col">작성자</th>
+                        <th scope="col">작성일</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-group-divider" style="text-align: center;">
+                    <tr th:each="list : ${freeboardList}">
+
+<!--                        삭제버튼-->
+                        <td align="center">
+                        <a class="btn btn-danger"><em class="fa fa-trash"></em></a>
+                        </td>
+<!--                        -->
+
+
+                        <td th:text="${list.boardNo}"></td>
+                        <td th:text="${list.title}" style="cursor: pointer; color: blue;" th:onclick="|location.href='@{/feedback/view(boardNo=${list.boardNo})}'|"></td>
+                        <td th:text="${list.writeId}"></td>
+                        <td th:text="${list.regdate}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <button type="button" style="float: right;"class="btn btn-outline-dark" onclick="location.href='/feedback/write';">글쓰기</button>
+            </div>
+        </div>
+
+        </div>
+    </section>
+
+</main>
+<!-- End #main -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src="/vendor/purecounter/purecounter_vanilla.js"></script>
+<script src="/vendor/aos/aos.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+<script src="/js/recruitReview/mainRecruitReview.js"></script>
+</body>
+
+</html>

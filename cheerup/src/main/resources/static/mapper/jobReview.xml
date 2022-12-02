@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codepresso.cheerup.dao.RecruitReviewMapper">
+    <select id="getAllRecruitReview" parameterType="Integer" resultType="RecruitReview">
+        SELECT
+            V.*
+        FROM
+            (
+                SELECT
+                    @rownum:=@rownum+1		as	rownum,
+		boardNo,
+		title,
+		content,
+		category,
+		writeId,
+		regdate,
+		company,
+		codingDiff
+                FROM
+                    recruitment_review rr ,
+                    (SELECT @rownum:=0) TMP
+                ORDER BY boardNo DESC, rownum desc limit #{startIndex}, #{pageSize}
+            ) V
+    </select>
+
+    <select id="getOneRecruitReview" parameterType="Integer" resultType="RecruitReview">
+        select * from recruitment_review where boardNo = #{boardNo}
+    </select>
+
+    <select id="findAllCnt" resultType="_int">
+        select count(*) from recruitment_review
+    </select>
+
+    <select id="findSearchCnt" parameterType="RecruitReview" resultType="_int">
+        select count(*) from recruitment_review
+            where
+            (title like CONCAT('%',#{searchKeyword},'%') or content like CONCAT('%',#{searchKeyword},'%'))
+            <if test='!(category.equals("9999") || category.equals(""))'>
+                and category = #{category}
+            </if>
+    </select>
+
+    <select id="getSearchRecruitReview" parameterType="RecruitReview" resultType="RecruitReview">
+        SELECT
+        V.*
+        FROM
+        (
+        SELECT
+        @rownum:=@rownum+1	as	rownum,
+        boardNo,
+        title,
+        content,
+        category,
+        writeId,
+        regdate,
+        company,
+        codingDiff
+        FROM
+        recruitment_review rr ,
+        (SELECT @rownum:=0) TMP
+        WHERE
+        (title like CONCAT('%',#{searchKeyword},'%') or content like CONCAT('%',#{searchKeyword},'%'))
+        <if test='!(category.equals("9999") || category.equals(""))'>
+            and category = #{category}
+        </if>
+        ORDER BY boardNo DESC, rownum desc limit #{startIndex}, #{pageSize}
+        ) V
+    </select>
+
+    <insert id="enrollReview" parameterType="RecruitReview">
+        insert into recruitment_review(title,content,category,writeId,regdate,company,codingDiff) values
+        (#{title}, #{content}, #{category}, #{writeId}, now(),  #{company}, #{codingDiff});
+    </insert>
+
+    <update id="updateReview" parameterType="RecruitReview">
+        update recruitment_review set title = #{title}, content = #{content}, category = #{category}, company = #{company},codingDiff = #{codingDiff} where boardNo = #{boardNo}
+    </update>
+
+    <delete id="deleteReview" parameterType="Integer">
+        delete from recruitment_review where boardNo=#{boardNo}
+    </delete>
+</mapper>

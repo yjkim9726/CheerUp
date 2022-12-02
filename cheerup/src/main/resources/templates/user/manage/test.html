@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <script>
+
+        function check(){
+         var id = '<%=(String)session.getAttribute("id")%>';
+         document.getElementById('test').value = id;
+
+    }
+  </script>
+</head>
+<body>
+
+
+<span>이름</span>
+<input type="text" th:placeholder="${session.id}"
+       th:value="${session.id}" name="id" id="id" readonly>
+<input type="text" th:placeholder="${session.role}"
+       th:value="${session.role}" name="role" id="role" readonly>
+
+modify - auth->
+<h1 sec:authorize="hasRole('USER')">Has user Role</h1>
+<h1 sec:authorize="hasRole('ADMIN')">Has admin Role</h1>
+<h1 sec:authorize="isAuthenticated()">authed</h1>
+<!--인증시 사용된 객체에 대한 정보-->
+<b>Authenticated DTO:</b>
+<div sec:authentication="principal"></div>
+<!--인증시 사용된 객체의 Username (ID)-->
+<b>Authenticated username:</b>
+<div sec:authentication="name"></div>
+<!--객체의 권한-->
+<b>Authenticated user role:</b>
+<div sec:authentication="principal.authorities"></div>
+<-modify - auth
+
+<input type="text" th:value="${id}" id="test">
+</body>
+</html>

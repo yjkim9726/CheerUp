@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>CheerUp : 면접 시뮬레이션</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <style>
+        .center{
+            text-align: center;
+        }
+    </style>
+    <!--head config layout link-->
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
+</head>
+
+
+<body>
+<!--header config layout link-->
+
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+        <a href="/home" class="logo d-flex align-items-center">
+            <img src="/img/logo.png" alt="">
+            <span>CheerUp</span>
+        </a>
+
+        <!-- .navbar -->
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a></li>
+                <li><a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></li>
+                <li><a class="nav-link" th:href="@{/signup}">회원가입</a>
+                <li><a class="nav-link scrollto" href="/freeboard/main">자유게시판</a></li>
+                <li><a class="nav-link scrollto" href="/interview-home">면접 연습</a></li>
+                <li><a class="nav-link scrollto" href="/recruitReview/mainRecruitReview">채용 후기</a></li>
+                <li><a class="nav-link scrollto" href="/feedback/main">피드백</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav>
+
+    </div>
+</header>
+<!-- End Header -->
+
+<main id="main">
+
+    <section class="inner-page" style="margin-top:5%;">
+
+        <div class="container">
+            <div class="jumbotron"  style="text-align:center">
+                <h1 class="display-4">면접 시뮬레이션 결과</h1>
+                <p>응답이 정상적으로 저장 되었습니다.</p>
+                <p>무응답한 질문은 < 무응답 다시보기 >에서 진행할 수 있습니다! </p>
+                <p> CheerUp은 여러분들의 최종 합격을 응원합니다:) </p>
+            </div>
+            <div class="row d-flex justify-content-center ">
+                <div class="col-md-8">
+                    <div class="span5">
+                        <table class="table table-condensed" style="margin-left: auto; margin-right: auto; text-align: center" >
+                            <thead>
+                            <tr>
+                                <th>카테고리</th>
+                                <th>질문</th>
+                                <th>응답</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each ="l : ${map}" >
+
+                                <td th:if="${l.response.category == 'programming'}">프로그래밍</td>
+                                <td th:if="${l.response.category == 'data_structure'}">자료구조</td>
+                                <td th:if="${l.response.category == 'algorithm'}">알고리즘</td>
+                                <td th:if="${l.response.category == 'database'}">데이터베이스</td>
+                                <td th:if="${l.response.category == 'network'}">네트워크</td>
+                                <td th:if="${l.response.category == 'os'}">운영체제</td>
+                                <td th:if="${l.response.category == 'personality'}">인성</td>
+                                <td th:if="${l.response.category == 'surprise'}">돌발</td>
+                                <td th:text="${l.response.question}"></td>
+                                <td>
+                                    <button th:if="${l.answer == 'O'}" type="button" class="btn btn-primary" disabled>통과</button>
+                                    <button th:if="${l.answer == 'X'}" type="button" class="btn btn-danger"  disabled>무응답</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--테이블 끝 -->
+                    <!--버튼-->
+                    <div class="center" style="margin-top:10%;">
+                        <a class= "btn btn-light btn-lg" href="/interview-home" style="display :inline-block;">처음으로</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--div 끝-->
+    </section>
+</main>
+
+
+</body>
+</html>

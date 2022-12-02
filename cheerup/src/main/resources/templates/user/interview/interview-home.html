@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>CheerUp : 면접 시뮬레이션</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!--head config layout link-->
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
+    <style>
+label{ display:inline-block; width:100px; line-height:50px; }
+    </style>
+
+    <script>
+            $(document).ready(function(){
+                $(".close").click(function(){
+                    $("#info_modal").modal('hide');
+                });
+            });
+
+           function fn_select(){
+
+            var selectCheck = document.getElementsByName("category");
+            var count = 0;
+            var categoryArray = [];
+
+                //카테고리 선택 분야 유효성 검사
+                for(var i=0; i<selectCheck.length; i++){
+                    if(selectCheck[i].checked){
+                        count++;
+                    }
+                }
+                if(!count){
+                    alert("[안내] 카테고리를 하나 이상 선택해주세요");
+                    return false;
+                }
+
+                for (let i = 0; i < selectCheck.length; i++) {
+                  // 속성중에 체크 된 항목이 있을 경우
+                  if (selectCheck[i].checked == true) {
+                    categoryArray.push(selectCheck[i].value);
+                  }
+                }
+                //
+                document.getElementsByName("select_category").value = "categoryArray";
+
+                document.getElementById('interview_select_form').submit()
+
+
+           }
+
+
+    </script>
+
+
+</head>
+
+
+<body>
+<!--header config layout link-->
+
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+        <a href="/home" class="logo d-flex align-items-center">
+            <img src="/img/logo.png" alt="">
+            <span>CheerUp</span>
+        </a>
+
+        <!-- .navbar -->
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a></li>
+                <li><a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></li>
+                <li><a class="nav-link" th:href="@{/signup}">회원가입</a>
+                <li><a class="nav-link scrollto" href="/freeboard/main">자유게시판</a></li>
+
+                <li><a class="nav-link scrollto" href="/freeboard/main">자유게시판</a></li>
+                <li><a class="nav-link scrollto" href="/interview-home">면접 연습</a></li>
+                <li><a class="nav-link scrollto" href="/recruitReview/mainRecruitReview">채용 후기</a></li>
+                <li><a class="nav-link scrollto" href="/feedback/main">피드백</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav>
+
+    </div>
+</header>
+<!-- End Header -->
+
+<!--modal -->
+<div class="modal" tabindex="-1" id="info_modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title w-100" ><b>면접 시뮬레이션 이용 방법</b></h5>
+                <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5><b>1. 원하는 질문 카테고리 선택</b></h5>
+                <p> 선택한 질문 카테고리의 갯수대로 질문의 수를 자동 조절합니다 <br> (최소 10개 ~ 20개 이하) </p>
+                <p> 화면에 나오는 질문에 내가 대답했다면 체크버튼을, 대답을 조리있게 하지 못했거나
+                    대답할 수 없는 질문이라면 X버튼을 눌러주세요. <br>
+                    X버튼은 '무응답'의 의미로 시뮬레이션 종료 후 자동 저장 됩니다.
+                </p>
+                <hr>
+                <h5><b>2. 무응답 질문만 모아보기</b></h5>
+                <p>면접 시뮬레이션 종료 후 무응답 체크 된 질문들은 자동 저장되어, 무응답 질문들만 모아볼 수 있습니다. </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal end-->
+<main id="main">
+
+    <section class="inner-page" style="margin-top:5%;">
+
+        <div class="container">
+            <div class="jumbotron"  style="text-align:center">
+                <h1 class="display-4">면접 시뮬레이션</h1>
+                <hr class="my-4">
+                <p class="lead">다양한 카테고리의 면접 질문들을 실전처럼 준비해보세요!</p>
+
+                <button style="float:right;" type="button" class="btn btn-warning" id="info" data-toggle="modal" data-target="#info_modal"> 이용방법</button>
+            </div>
+
+            <div class="container text-center">
+                <div class="row justify-content-around" >
+                    <div class="col-4" style="border: 1px solid black; background-color:#F8F8F8	; ">
+
+                        <form id="interview_select_form" name="interview_select_form" method="GET" th:action="@{/interview}" accept-charset="UTF-8"  >
+
+
+                            <h5 style=" padding-top:5%"><b>원하는 질문 카테고리 선택</b></h5>
+                            <hr>
+                            <!--div 시작-->
+                            <label><input type="checkbox" name="category" value="programming">프로그래밍</label>
+                            <label><input type="checkbox" name="category" value="data_structure">자료구조</label>
+                            <label><input type="checkbox" name="category" value="algorithm">알고리즘</label>
+                            <label><input type="checkbox" name="category" value="database">DB이론</label>
+                            <label><input type="checkbox" name="category" value="network">네트워크</label>
+                            <label><input type="checkbox" name="category" value="os">운영체제</label>
+                            <label><input type="checkbox" name="category" value="personality">인성질문</label>
+                            <label><input type="checkbox" name="category" value="surprise">돌발질문</label>
+                            <!--div 끝-->
+                            <p>   <button type="button" class="btn btn-primary btn-lg" onclick="fn_select();">시작하기</button></p>
+                        </form>
+                    </div>
+
+                    <!--div 시작-->
+                    <div class="col-4" style="border: 1px solid black; background-color:#F8F8F8	;">
+                        <h5 style="padding-top:5%"><b>무응답 질문 모아보기</b></h5>
+                        <hr>
+
+                        <span style="  display: inline-block; margin-top:2%;">프로그래밍 < [[${programming}]] >건</span>
+                        <span>자료구조< [[${data_structure}]] >건</span> <br>
+                        <p style="padding-top:4%;"></p>
+                        <span>알고리즘< [[${algorithm}]] >건</span>
+                        <span>DB 이론< [[${database}]] >건</span> <br>
+                        <p style="padding-top:4%;"></p>
+                        <span>네트워크< [[${network}]] >건</span>
+                        <span>운영체제< [[${os}]] >건</span> <br>
+                        <p style="padding-top:4%;"></p>
+                        <span>인성질문< [[${personality}]] >건</span>
+                        <span>돌발질문< [[${surprise}]] >건</span>
+
+                        <div th:if="${programming} > 0  or
+                                    ${data_structure}> 0 or
+                                    ${algorithm}> 0 or
+                                    ${database}> 0 or
+                                    ${network} > 0 or
+                                    ${os} > 0 or
+                                    ${personality} > 0 or
+                                    ${surprise} > 0">
+                            <p style="margin-top:7%;">
+                                <a class= "btn btn-primary btn-lg" href="/interviewing_f">시작하기</a>
+                            </p>
+                        </div>
+
+                        <div th:if="${programming} < 0 and
+                                    ${data_structure} < 0 and
+                                    ${algorithm} < 0 and
+                                    ${database} < 0 and
+                                    ${network} < 0 and
+                                    ${os} < 0 and
+                                    ${personality} < 0 and
+                                    ${surprise} < 0">
+                            <p style="margin-top:7%;">
+                                <a class= "btn btn-primary btn-lg disabled">기록 없음</a>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!--div 끝-->
+        </div>
+        </div>
+        </div>
+    </section>
+</main>
+
+
+</body>
+</html>

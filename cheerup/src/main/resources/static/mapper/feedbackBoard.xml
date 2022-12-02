@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codepresso.cheerup.dao.FeedBackBoardMapper">
+
+    <!--  전체 게시글 조회  -->
+    <select id="getAllFeedBackBoardList" resultType="com.codepresso.cheerup.vo.FeedBackBoard">
+        select * from feedbackboard order by boardNo desc
+    </select>
+
+    <!--  게시글 상세 조회  -->
+    <select id="getFeedBackBoardDetail" parameterType="map" resultType="com.codepresso.cheerup.vo.FeedBackBoard">
+        select * from feedbackboard where boardNo=#{boardNo}
+    </select>
+
+    <!--  게시글 작성  -->
+    <insert id="insertFeedBackBoard" parameterType="FeedBackBoard">
+        insert into feedbackboard (title, content, writeId, regdate)
+        values (#{title}, #{content}, #{writeId}, now())
+    </insert>
+
+    <!--  게시글 수정  -->
+    <update id="updateFeedBackBoard" parameterType="FeedBackBoard">
+        update feedbackboard set title=#{title}, content=#{content} where boardNo=#{boardNo}
+    </update>
+
+    <!--  게시글 삭제  -->
+    <delete id="deleteFeedBackBoard" parameterType="FeedBackBoard">
+        delete from feedbackboard where boardNo=#{boardNo}
+    </delete>
+
+</mapper>

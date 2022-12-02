@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codepresso.cheerup.dao.FeedBackBoardReplyMapper">
+
+    <!--  전체 댓글 조회  -->
+    <select id="getAllReplyList" resultType="com.codepresso.cheerup.vo.FeedBackBoardReply">
+        select * from feedbackBoardOfReply order by replyNo desc
+    </select>
+
+    <select id="getReplyTotal" resultType="int">
+        select count(*) from feedbackBoardOfReply where boardNo = #{boardNo}
+    </select>
+
+    <!--  댓글 작성  -->
+    <insert id="insertReply" parameterType="FeedBackBoardReply">
+        insert into feedbackBoardOfReply (boardNo, reply, writeId, replydate)
+        values (#{boardNo}, #{reply}, #{writeId}, now())
+    </insert>
+
+    <!--  댓글 삭제  -->
+    <delete id="deleteReply" parameterType="Integer">
+        delete from feedbackBoardOfReply where replyNo= #{replyNo}
+    </delete>
+
+</mapper>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+
+  <!--headerFragment 선언-->
+  <header th:fragment="headerFragment" class="header fixed-top">
+
+      <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+        <a href="/home" class="logo d-flex align-items-center">
+          <img src="/img/logo.png" alt="">
+          <span>CheerUp</span>
+        </a>
+
+        <nav id="navbar" class="navbar">
+          <ul>
+            <!--                <li><a class="nav-link scrollto " href="#hero">Home</a></li>-->
+            <!--                <li><a class="nav-link scrollto" href="#about">About</a></li>-->
+            <!--                <li><a class="nav-link scrollto" href="#services">Services</a></li>-->
+
+<!--            <li sec:authorize="hasRole('ROLE_ADMIN')">관리자 페이지</li>-->
+<!--            <li sec:authorize="hasRole('ROLE_USER')">로그아웃</li>-->
+<!--            <li sec:authorize="hasRole('ADMIN')">관리자 페이지</li>-->
+            <li><a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a></li>
+            <li></li><a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></li>
+            <li><a class="nav-link" th:href="@{/signup}">회원가입</a><li><a class="nav-link scrollto" href="/freeboard/main">자유게시판</a></li>
+            <li><a class="nav-link scrollto" href="/interview-home" >면접 연습</a></li>
+            <!--                <li><a href="blog.html">Blog</a></li>-->
+            <li><a class="nav-link scrollto" href="/recruitReview/mainRecruitReview">채용 후기</a></li>
+            <li><a class="nav-link scrollto" href="/feedback/main">피드백</a></li>
+          </ul>
+          <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+      </div>
+    </header>
+
+</html>

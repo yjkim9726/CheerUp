@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>로그인</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <style>
+
+        .center{text-align: center;}
+
+        .divider-text {
+            position: relative;
+            text-align: center;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        .divider-text span {
+            padding: 7px;
+            font-size: 12px;
+            position: relative;
+            z-index: 2;
+        }
+        .divider-text:after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            border-bottom: 1px solid #ddd;
+            top: 55%;
+            left: 0;
+            z-index: 1;
+        }
+
+    </style>
+
+    <script>
+        function form_check(){
+            var id = document.getElementById("id");
+            var password = document.getElementById("password");
+
+            if (id.value == "") {
+                alert("아이디를 입력하세요.");
+                id.focus();
+            };
+            if (password.value == "") {
+                alert("아이디를 입력하세요.");
+                password.focus();
+                return false;
+            };
+             document.getElementById('login_form').submit()
+
+        }
+
+    </script>
+
+    <!--head config layout link-->
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
+</head>
+
+
+<body>
+<!--header config layout link-->
+
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+        <a href="/home" class="logo d-flex align-items-center">
+            <img src="/img/logo.png" alt="">
+            <span>CheerUp</span>
+        </a>
+
+        <!-- .navbar -->
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a></li>
+                <li><a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></li>
+                <li><a class="nav-link" th:href="@{/signup}">회원가입</a>
+                <li><a class="nav-link scrollto" href="/freeboard/main">자유게시판</a></li>
+                <li><a class="nav-link scrollto" href="/interview-home">면접 연습</a></li>
+                <li><a class="nav-link scrollto" href="/recruitReview/mainRecruitReview">채용 후기</a></li>
+                <li><a class="nav-link scrollto" href="/feedback/main">피드백</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav>
+
+    </div>
+</header>
+<!-- End Header -->
+
+<main id="main">
+    <section class="inner-page" style="margin-top:10%;">
+        <div class="container" >
+
+            <!-- 가져온 폼 -->
+            <div class="container" style="padding-left:20%; padding-right:20%;">
+
+                <div class="card bg-light" >
+                    <article class="card-body mx-auto" style="max-width: 400px;">
+                        <h4 class="card-title mt-3 text-center"><b>로그인</b></h4>
+                        <hr>
+                        <form id="login_form" name="login_form" method="post" th:action="@{/dologin}" accept-charset="UTF-8" > <!-- modify go dologin loginprocesspage -->
+                            <div class="form-group input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                                </div>
+                                <input name="username" class="form-control" placeholder="ID" type="text"> <!--modify security login paramater name -->
+                            </div> <!-- form-group// -->
+
+                            <div class="form-group input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                                </div>
+                                <input name="password" class="form-control" placeholder="비밀번호" type="password">
+                            </div> <!-- form-group// -->
+
+                            <div th:if="${param.error}">
+                                <p th:text="${exception}" class="alert alert-danger"></p>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-block"> 로그인  </button>
+                            </div>
+                            <!-- form-group// -->
+                            <div class="form-group text-center">
+                                <a href="/findId">아이디 찾기</a> | <a href="/findPw">비밀번호 찾기</a>
+                            </div>
+                            <p class="text-center"> 회원이 아니라면? <a href="/signup">회원가입</a> </p>
+                        </form>
+                    </article>
+                </div> <!-- card.// -->
+            </div>
+        </div>
+    </section>
+</main>
+
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src="/vendor/purecounter/purecounter_vanilla.js"></script>
+<script src="/vendor/aos/aos.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+
+</body>
+</html>

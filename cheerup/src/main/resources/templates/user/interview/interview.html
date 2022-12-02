@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>CheerUp : 면접 시뮬레이션</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <style>
+        .button {
+          border: none;
+          color: white;
+          padding: 20px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 4px 2px;
+          width : 100px;
+          height : 100px;
+          border-radius: 80%;
+        }
+
+        .icolor{
+            color: white;
+            width : 50px;
+            height : 50px;
+        }
+
+
+    </style>
+
+    <!--head config layout link-->
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
+</head>
+
+
+<body>
+<!--header config layout link-->
+
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+        <a href="/home" class="logo d-flex align-items-center">
+            <img src="/img/logo.png" alt="">
+            <span>CheerUp</span>
+        </a>
+
+        <!-- .navbar -->
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a></li>
+                <li></li><a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a></li>
+                <li><a class="nav-link" th:href="@{/signup}">회원가입</a>
+                <li><a class="nav-link scrollto" href="/freeboard/main">자유게시판</a></li>
+
+                <li><a class="nav-link scrollto" href="/freeboard/main">자유게시판</a></li>
+                <li><a class="nav-link scrollto" href="/interview-home">면접 연습</a></li>
+                <li><a class="nav-link scrollto" href="/recruitReview/mainRecruitReview">채용 후기</a></li>
+                <li><a class="nav-link scrollto" href="/feedback/main">피드백</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav>
+
+    </div>
+</header>
+<!-- End Header -->
+
+<main id="main">
+
+    <section class="inner-page" style="margin-top:5%;">
+        <div class="container">
+            <div class="jumbotron"  style="text-align:center; margin-top:10%">
+                <div class = "question" id = "question">
+                    <!-- 질문 영역 -->
+
+                    <!-- 질문 영역 끝 -->
+                </div>
+            </div>
+
+            <div class="container text-center" style="margin-top:5%;">
+                <div class="row justify-content-around">
+                    <div class = "answer" id = "answer">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--div 끝-->
+    </section>
+
+    <form id="interview_response_form" name="interview_response_form" method="POST" th:action="@{/interview-result}" accept-charset="UTF-8"  >
+        <input type="hidden" name="interview_id" id ="interview_id" >
+        <input type="hidden" name="interview_answer" id ="interview_answer" >
+    </form>
+</main>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+<!--  여기까지 들어온 값 확인-->
+        const list = [[${list}]];
+
+        console.log(typeof(list));
+        const count = Object.keys(list).length;
+        console.log(count);
+
+
+
+    /*]]>*/
+<!--        여기까지 들어온 값 확인 끝-->
+
+        var question, answer;
+        var question_array = [];
+        var id_array = [];
+        var category_array = [];
+        var total_array = [];
+        var response_rate_array = [];
+
+<!--        question_array = Object.values(list);-->
+        console.log("문제가 들어오나요"+question_array);
+
+        <!-- 질문 추출 -->
+        for(var i=0; i<list.length; i++){
+           question_array.push(list[i].question);
+        }
+
+      <!-- 응답률 추출 -->
+        for(var i=0; i<list.length; i++){
+           response_rate_array.push(list[i].response_rate);
+        }
+
+        <!-- id 추출-->
+        for(var i=0; i<list.length; i++){
+           id_array.push(list[i].interview_id);
+        }
+
+        <!-- 카테고리 추출 -->
+        for(var i=0; i<list.length; i++){
+           category_array.push(list[i].category);
+        }
+
+        <!--응답률 추출->
+        for(var i=0; i<list.length; i++){
+           total_array.push(list[i].total);
+        }
+
+        var select_array = [];
+        var start;
+        var end = Object.keys(list).length;
+
+        function init(){
+            question = document.getElementById('question');
+            answer = document.getElementById('answer');
+
+            start = 0;
+
+            setButton(start);
+        }
+
+        init();
+
+        function setButton(){
+
+        console.log("여기는 setButton 의"+category_array[0]);
+
+            if(start == end){
+
+                question.innerHTML = "<h3>모든 질문에 응답하셨습니다. <br> 결과를 확인해보세요</h3><hr>";
+
+                answer.innerHTML = "<div class='d-grid gap-2 col-6 mx-auto'>";
+                answer.innerHTML += "<button class='btn btn-primary' type='button' onclick='fn_interviewResponse();'>결과보기</button></div>";
+            }else{
+
+                question.innerHTML = "<h7><"+category_array[start]+"></h7><br><br><h3>"
+               +question_array[start]+"</h3><hr>"
+               +"<div style='float: right;'>응답 성공률 : "+response_rate_array[start]+"%</div>";
+
+               answer.innerHTML = "<div class='container text-center'>"
+                + "<div class='row justify-content-around'>"
+                + "<div class='col-4'>"
+                + "<button class='button button5' onclick='o_click();' style='background-color:#5bfc9e;'>"
+                + "<i class='fas fa-check fa-3x' style='color:white'></i></button></div>"
+                + "<div class='col-4'>"
+                + "<button class='button button5'onclick='x_click();'  style='background-color:#fa6c52;'>"
+                + "<i class='fa fa-times fa-3x' style='color:white'></i></button></div>"
+                + "</div></div>";
+                }
+        }
+
+        function o_click(){
+            select_array.push('O');
+            start++;
+            setButton();
+
+            console.log("o_click의 "+start +"번째!");
+            console.log("o_click의 select_array "+select_array);
+
+        }
+
+        function x_click(){
+            select_array.push('X');
+            start++;
+            setButton();
+            console.log("x_click "+start +"번째!");
+            console.log("x_click select_array "+select_array);
+
+        }
+
+        function fn_interviewResponse(){
+
+             console.log("fn_interviewResponse :id_array "+id_array);
+             console.log("fn_interviewResponse : select_array "+select_array);
+
+             document.getElementById('interview_id').value = id_array;
+             document.getElementById('interview_answer').value = select_array;
+
+             document.getElementById('interview_response_form').submit();
+        }
+
+</script>
+
+
+</body>
+</html>

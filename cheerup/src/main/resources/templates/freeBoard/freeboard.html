@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>FlexStart Bootstrap Template - Index</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!--head config layout link-->
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
+    <link href="/css/freeBoard/mainFreeBoard.css" rel="stylesheet">
+</head>
+
+
+<body>
+<!--header config layout link-->
+<th:block th:replace="fragments/header :: headerFragment"></th:block>
+
+<main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section class="breadcrumbs">
+        <div class="container">
+
+            <ol>
+                <li><a href="index.html">Home</a></li>
+                <li>자유게시판</li>
+            </ol>
+            <h2>자유게시판</h2>
+
+        </div>
+    </section>
+
+    <section class="inner-page">
+        <div class="container aos-init aos-animate" data-aos="fade-up">
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col-4">
+<!--                    <select style="height: 44px;width: 250px;margin: 0;" name="category" class="form-select" aria-label="Default select example">-->
+<!--                        <option th:selected="${searchCategory == null}">카테고리</option>-->
+<!--                        <option th:selected="${searchCategory}">일상</option>-->
+<!--                        <option th:selected="${searchCategory}">자료</option>-->
+<!--                        <option th:selected="${searchCategory}">기타</option>-->
+<!--                    </select>-->
+<!--                    <select style="height: 44px;" class="form-select" aria-label="Default select example">-->
+<!--                        <option selected>카테고리</option>-->
+<!--                        <option value="">일상</option>-->
+<!--                        <option value="">자료</option>-->
+<!--                    </select>-->
+                </div>
+            </div>
+            <div class="row">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">글 번호</th>
+                        <th scope="col">카테고리</th>
+                        <th scope="col">제목</th>
+                        <th scope="col">작성자</th>
+                        <th scope="col">작성일</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-group-divider" style="text-align: center;">
+                        <tr th:each="list : ${freeboardList}">
+                            <td th:text="${list.boardNo}"></td>
+                            <td th:text="${list.category}"></td>
+                            <td th:text="${list.title}" style="cursor: pointer; color: blue;" th:onclick="|location.href='@{/freeboard/view(boardNo=${list.boardNo})}'|"></td>
+                            <td th:text="${list.writeId}"></td>
+                            <td th:text="${list.regdate}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div>
+                    <button type="button" style="float: right;"class="btn btn-outline-dark" onclick="location.href='/freeboard/write';">글쓰기</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+<!-- End #main -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src="/vendor/purecounter/purecounter_vanilla.js"></script>
+<script src="/vendor/aos/aos.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+
+</body>
+
+</html>
